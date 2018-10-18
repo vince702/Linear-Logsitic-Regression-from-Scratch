@@ -80,6 +80,42 @@ def getBeta_BatchGradient(train_x, train_y, lr, num_iter, verbose):
 # train_x and train_y are numpy arrays
 # function returns value of beta calculated using (1) Newton-Raphson method
 
+def getBeta_BatchGradientReg(train_x, train_y, lr, num_iter, verbose, gamma = .0000001):
+    
+    beta = np.random.rand(train_x.shape[1])
+
+    n = train_x.shape[0] #total of data points
+    p = train_x.shape[1] #total number of attributes
+
+    
+    beta = np.random.rand(p)
+    gradient = np.random.rand(p)
+    #update beta interatively
+    for iter in range(0, num_iter):
+        ########## Please Fill Missing Lines Here ##########
+        pi = sigmoid(train_x.dot(beta)) - train_y
+        
+        for j in range(0,p): 
+            gradient_j = 0
+     
+            for i in range(0,n):
+                gradient_j += train_x[i,j] * (pi[i])/n + 2 * gamma * beta[j]
+                
+                
+            gradient[j] = gradient_j
+            
+        
+     
+        beta = beta - gradient
+       
+        if(verbose == True and iter % 1000 == 0):
+            avgLogL = compute_avglogL(train_x, train_y, beta)
+            print(f'average logL for iteration {iter}: {avgLogL} \t')
+  
+    return beta
+
+
+
 
 
 def getBeta_Newton(train_x, train_y, num_iter, verbose):
